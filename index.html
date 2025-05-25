@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القرآن الكريم - صدقة جارية</title>
+    <style>
+        body {
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            line-height: 2;
+            background-color: #f5f5f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #2c5e1a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .surah-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .surah-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+        .surah-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #f0f7e6;
+        }
+        .surah-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #2c5e1a;
+        }
+        .surah-details {
+            font-size: 14px;
+            color: #666;
+        }
+        .surah-content {
+            display: none;
+            margin-top: 30px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            line-height: 2.5;
+            font-size: 20px;
+            text-align: justify;
+        }
+        .active {
+            display: block;
+        }
+        .back-btn {
+            background-color: #2c5e1a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .back-btn:hover {
+            background-color: #1e3d12;
+        }
+        .dedication {
+            background-color: #e6f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-right: 5px solid #2c5e1a;
+        }
+        .dua-section {
+            background-color: #fff8e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-right: 5px solid #e6a700;
+        }
+        h1, h2, h3 {
+            color: #2c5e1a;
+        }
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .cool-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #fff8e6;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-right: 10px;
+        }
+        
+        .cool-btn:hover {
+            background-color: #e6f3ff;
+        }
+        
+        .cool-btn:active {
+            transform: translateY(1px);
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+        .nice-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #e6f3ff;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-right: 10px;
+        }
+        
+        .nice-btn:hover {
+            background-color: #fff8e6;
+        }
+        
+        .nice-btn:active {
+            transform: translateY(1px);
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+        @media (max-width: 768px) {
+            .surah-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1>القرآن الكريم</h1>
+        <p>هذا الموقع صدقة جارية عن أرواح أحبائنا</p>
+    </div>
+
+    <div class="container">
+        <div class="dedication">
+            <h2>صدقة جارية</h2>
+            <p>هذا العمل خالصًا لوجه الله تعالى وصدقة جارية عن روح:</p>
+            <ul>
+                <li>روان ناصر أحمد السيد</li>
+                <li>سارة حسن محمد عبد الرحمن العدل</li>
+                
+            </ul>
+            <p>اللهم اجعل هذا القرآن الكريم شفيعًا لهم، ونورًا في قبورهم، ورفعة في درجاتهم.</p>
+        </div>
+
+        <div class="dua-section">
+            <h2>الدعاء لهم</h2>
+            <p>اللهم اغفر لهم وارحمهم، وعافهم واعف عنهم، وأكرم نزلهم، ووسع مدخلهم، واغسلهم بالماء والثلج والبرد، ونقهم من الذنوب والخطايا كما ينقى الثوب الأبيض من الدنس.</p>
+            <p>اللهم اجعل القرآن الكريم ربيع قلوبهم، ونورًا لأبصارهم، وجلاءً لأحزانهم، وذهابًا لهمومهم وغمتهم.</p>
+            <p>اللهم أدخلهم الجنة بغير حساب ولا سابقة عذاب، وارزقهم الفردوس الأعلى مع النبيين والصديقين والشهداء وحسن أولئك رفيقًا.</p>
+            <p>اللهم اجعل قبورهم روضة من رياض الجنة، ولا تجعلها حفرة من حفر النار.</p>
+        </div>
+        
+        <input type="text" class="search-box" placeholder="ابحث عن القارئ..." id="searchInput">
+
+        <div id="surahList" class="surah-list">
+            <!-- سور القرآن سيتم إضافتها هنا بالجافاسكريبت -->
+        </div>
+
+        <div id="surahContent" class="surah-content"></div>
+    </div>
+
+    <script>
+        // بيانات سور القرآن (مثال لبعض السور القصيرة)
+        const surahs = [
+        {
+                id: 1,
+                name: "محمد صديق المنشاوي mp3",
+                content: `
+                </div>
+        <div class="dua-section">
+            <ul class=nav-menu>
+                <a href="https://server10.mp3quran.net/minsh/001.mp3" class="cool-btn">الفاتحة</a>
+                <a href="https://server10.mp3quran.net/minsh/002.mp3" class="cool-btn">البقرة</a>
+                <a href="https://server10.mp3quran.net/minsh/003.mp3" class="cool-btn">آل عمران</a>
+                <a href="https://server10.mp3quran.net/minsh/004.mp3" class="cool-btn">النساء</a>
+                <a href="https://server10.mp3quran.net/minsh/005.mp3" class="cool-btn">المائدة</a>
+                <a href="https://server10.mp3quran.net/minsh/006.mp3" class="cool-btn">الأنعام</a>
+                <a href="https://server10.mp3quran.net/minsh/007.mp3" class="cool-btn">الأعراف</a>
+                <a href="https://server10.mp3quran.net/minsh/008.mp3" class="cool-btn">الأنفال</a>
+                <a href="https://server10.mp3quran.net/minsh/009.mp3" class="cool-btn">التوبة</a>
+                <a href="https://server10.mp3quran.net/minsh/010.mp3" class="cool-btn">يونس</a>
+                <a href="https://server10.mp3quran.net/minsh/011.mp3" class="cool-btn">هود</a>
+                <a href="https://server10.mp3quran.net/minsh/012.mp3" class="cool-btn">يوسف</a>
+                <a href="https://server10.mp3quran.net/minsh/013.mp3" class="cool-btn">الرعد</a>
+                <a href="https://server10.mp3quran.net/minsh/014.mp3" class="cool-btn">إبراهيم</a>
+                <a href="https://server10.mp3quran.net/minsh/015.mp3" class="cool-btn">الحجر</a>
+                <a href="https://server10.mp3quran.net/minsh/016.mp3" class="cool-btn">النحل</a>
+                <a href="https://server10.mp3quran.net/minsh/017.mp3" class="cool-btn">الإسراء</a>
+                <a href="https://server10.mp3quran.net/minsh/018.mp3" class="cool-btn">الكهف</a>
+                <a href="https://server10.mp3quran.net/minsh/019.mp3" class="cool-btn">مريم</a>
+                <a href="https://server10.mp3quran.net/minsh/020.mp3" class="cool-btn">طه</a>
+                <a href="https://server10.mp3quran.net/minsh/021.mp3" class="cool-btn">الأنبياء</a>
+                <a href="https://server10.mp3quran.net/minsh/022.mp3" class="cool-btn">الحج</a>
+                <a href="https://server10.mp3quran.net/minsh/023.mp3" class="cool-btn">المؤمنون</a>
+                <a href="https://server10.mp3quran.net/minsh/024.mp3" class="cool-btn">النور</a>
+                <a href="https://server10.mp3quran.net/minsh/025.mp3" class="cool-btn">الفرقان</a>
+                <a href="https://server10.mp3quran.net/minsh/026.mp3" class="cool-btn">الشعراء</a>
+                <a href="https://server10.mp3quran.net/minsh/027.mp3" class="cool-btn">النمل</a>
+                <a href="https://server10.mp3quran.net/minsh/028.mp3" class="cool-btn">القصص</a>
+                <a href="https://server10.mp3quran.net/minsh/029.mp3" class="cool-btn">العنكبوت</a>
+                <a href="https://server10.mp3quran.net/minsh/030.mp3" class="cool-btn">الروم</a>
+                <a href="https://server10.mp3quran.net/minsh/031.mp3" class="cool-btn">لقمان</a>
+                <a href="https://server10.mp3quran.net/minsh/032.mp3" class="cool-btn">السجدة</a>
+                <a href="https://server10.mp3quran.net/minsh/033.mp3" class="cool-btn">الأحزاب</a>
+                <a href="https://server10.mp3quran.net/minsh/034.mp3" class="cool-btn">سبأ</a>
+                <a href="https://server10.mp3quran.net/minsh/035.mp3" class="cool-btn">فاطر</a>
+                <a href="https://server10.mp3quran.net/minsh/036.mp3" class="cool-btn">يس</a>
+                <a href="https://server10.mp3quran.net/minsh/037.mp3" class="cool-btn">الصافات</a>
+                <a href="https://server10.mp3quran.net/minsh/038.mp3" class="cool-btn">ص</a>
+                <a href="https://server10.mp3quran.net/minsh/039.mp3" class="cool-btn">الزمر</a>
+                <a href="https://server10.mp3quran.net/minsh/040.mp3" class="cool-btn">غافر</a>
+                <a href="https://server10.mp3quran.net/minsh/041.mp3" class="cool-btn">فصلت</a>
+                <a href="https://server10.mp3quran.net/minsh/042.mp3" class="cool-btn">الشورى</a>
+                <a href="https://server10.mp3quran.net/minsh/043.mp3" class="cool-btn">الزخرف</a>
+                <a href="https://server10.mp3quran.net/minsh/044.mp3" class="cool-btn">الدخان</a>
+                <a href="https://server10.mp3quran.net/minsh/045.mp3" class="cool-btn">الجاثية</a>
+                <a href="https://server10.mp3quran.net/minsh/046.mp3" class="cool-btn">الاحقاف</a>
+                <a href="https://server10.mp3quran.net/minsh/047.mp3" class="cool-btn">محمد</a>
+                <a href="https://server10.mp3quran.net/minsh/048.mp3" class="cool-btn">الفتح</a>
+                <a href="https://server10.mp3quran.net/minsh/049.mp3" class="cool-btn">الحجرات</a>
+                <a href="https://server10.mp3quran.net/minsh/050.mp3" class="cool-btn">ق</a>
+                <a href="https://server10.mp3quran.net/minsh/051.mp3" class="cool-btn">الذاريات</a>
+                <a href="https://server10.mp3quran.net/minsh/052.mp3" class="cool-btn">الطور</a>
+                <a href="https://server10.mp3quran.net/minsh/053.mp3" class="cool-btn">النجم</a>
+                <a href="https://server10.mp3quran.net/minsh/054.mp3" class="cool-btn">القمر</a>
+                <a href="https://server10.mp3quran.net/minsh/055.mp3" class="cool-btn">الرحمن</a>
+                <a href="https://server10.mp3quran.net/minsh/056.mp3" class="cool-btn">الواقعة</a>
+                <a href="https://server10.mp3quran.net/minsh/057.mp3" class="cool-btn">الحديد</a>
+                <a href="https://server10.mp3quran.net/minsh/058.mp3" class="cool-btn">المجادلة</a>
+                <a href="https://server10.mp3quran.net/minsh/059.mp3" class="cool-btn">الحشر</a>
+                <a href="https://server10.mp3quran.net/minsh/060.mp3" class="cool-btn">الممتحنة</a>
+                <a href="https://server10.mp3quran.net/minsh/061.mp3" class="cool-btn">الصف</a>
+                <a href="https://server10.mp3quran.net/minsh/062.mp3" class="cool-btn">الجمعة</a>
+                <a href="https://server10.mp3quran.net/minsh/063.mp3" class="cool-btn">المنافقون</a>
+                <a href="https://server10.mp3quran.net/minsh/064.mp3" class="cool-btn">التغابن</a>
+                <a href="https://server10.mp3quran.net/minsh/065.mp3" class="cool-btn">الطلاق</a>
+                <a href="https://server10.mp3quran.net/minsh/066.mp3" class="cool-btn">التحريم</a>
+                <a href="https://server10.mp3quran.net/minsh/067.mp3" class="cool-btn">الملك</a>
+                <a href="https://server10.mp3quran.net/minsh/068.mp3" class="cool-btn">القلم</a>
+                <a href="https://server10.mp3quran.net/minsh/069.mp3" class="cool-btn">الحاقة</a>
+                <a href="https://server10.mp3quran.net/minsh/070.mp3" class="cool-btn">المعارج</a>
+                <a href="https://server10.mp3quran.net/minsh/071.mp3" class="cool-btn">نوح</a>
+                <a href="https://server10.mp3quran.net/minsh/072.mp3" class="cool-btn">الجن</a>
+                <a href="https://server10.mp3quran.net/minsh/073.mp3" class="cool-btn">المزمل</a>
+                <a href="https://server10.mp3quran.net/minsh/074.mp3" class="cool-btn">المدثر</a>
+                <a href="https://server10.mp3quran.net/minsh/075.mp3" class="cool-btn">القيامة</a>
+                <a href="https://server10.mp3quran.net/minsh/076.mp3" class="cool-btn">الإنسان</a>
+                <a href="https://server10.mp3quran.net/minsh/077.mp3" class="cool-btn">المرسلات</a>
+                <a href="https://server10.mp3quran.net/minsh/078.mp3" class="cool-btn">النبأ</a>
+                <a href="https://server10.mp3quran.net/minsh/079.mp3" class="cool-btn">النازعات</a>
+                <a href="https://server10.mp3quran.net/minsh/080.mp3" class="cool-btn">عبس</a>
+                <a href="https://server10.mp3quran.net/minsh/081.mp3" class="cool-btn">التكوير</a>
+                <a href="https://server10.mp3quran.net/minsh/082.mp3" class="cool-btn">الانفطار</a>
+                <a href="https://server10.mp3quran.net/minsh/083.mp3" class="cool-btn">المطففين</a>
+                <a href="https://server10.mp3quran.net/minsh/084.mp3" class="cool-btn">الإنشقاق</a>
+                <a href="https://server10.mp3quran.net/minsh/085.mp3" class="cool-btn">البروج</a>
+                <a href="https://server10.mp3quran.net/minsh/086.mp3" class="cool-btn">الطارق</a>
+                <a href="https://server10.mp3quran.net/minsh/087.mp3" class="cool-btn">الأعلي</a>
+                <a href="https://server10.mp3quran.net/minsh/088.mp3" class="cool-btn">الغاشية</a>
+                <a href="https://server10.mp3quran.net/minsh/089.mp3" class="cool-btn">الفجر</a>
+                <a href="https://server10.mp3quran.net/minsh/090.mp3" class="cool-btn">البلد</a>
+                <a href="https://server10.mp3quran.net/minsh/091.mp3" class="cool-btn">الشمس</a>
+                <a href="https://server10.mp3quran.net/minsh/092.mp3" class="cool-btn">الليل</a>
+                <a href="https://server10.mp3quran.net/minsh/093.mp3" class="cool-btn">الضحي</a>
+                <a href="https://server10.mp3quran.net/minsh/094.mp3" class="cool-btn">الشرح</a>
+                <a href="https://server10.mp3quran.net/minsh/095.mp3" class="cool-btn">التين</a>
+                <a href="https://server10.mp3quran.net/minsh/096.mp3" class="cool-btn">العلق</a>
+                <a href="https://server10.mp3quran.net/minsh/097.mp3" class="cool-btn">القدر</a>
+                <a href="https://server10.mp3quran.net/minsh/098.mp3" class="cool-btn">البينة</a>
+                <a href="https://server10.mp3quran.net/minsh/099.mp3" class="cool-btn">الزلزلة</a>
+                <a href="https://server10.mp3quran.net/minsh/100.mp3" class="cool-btn">العاديات</a>
+                <a href="https://server10.mp3quran.net/minsh/101.mp3" class="cool-btn">القارعة</a>
+                <a href="https://server10.mp3quran.net/minsh/102.mp3" class="cool-btn">التكاثر</a>
+                <a href="https://server10.mp3quran.net/minsh/103.mp3" class="cool-btn">العصر</a>
+                <a href="https://server10.mp3quran.net/minsh/104.mp3" class="cool-btn">الهمزة</a>
+                <a href="https://server10.mp3quran.net/minsh/105.mp3" class="cool-btn">الفيل</a>
+                <a href="https://server10.mp3quran.net/minsh/106.mp3" class="cool-btn">قريش</a>
+                <a href="https://server10.mp3quran.net/minsh/107.mp3" class="cool-btn">الماعون</a>
+                <a href="https://server10.mp3quran.net/minsh/108.mp3" class="cool-btn">الكوثر</a>
+                <a href="https://server10.mp3quran.net/minsh/109.mp3" class="cool-btn">الكافرون</a>
+                <a href="https://server10.mp3quran.net/minsh/110.mp3" class="cool-btn">النصر</a>
+                <a href="https://server10.mp3quran.net/minsh/111.mp3" class="cool-btn">المسد</a>
+                <a href="https://server10.mp3quran.net/minsh/112.mp3" class="cool-btn">الإخلاص</a>
+                <a href="https://server10.mp3quran.net/minsh/113.mp3" class="cool-btn">الفلق</a>
+                <a href="https://server10.mp3quran.net/minsh/114.mp3" class="cool-btn">الناس</a>
+            </ul>
+        
+
+        </div>
+            
+                
+                `
+            },
+            
+            
+            
+            // يمكن إضافة جميع سور القرآن هنا بنفس الطريقة
+        ];
+
+        // عرض قائمة السور
+        const surahListElement = document.getElementById('surahList');
+        const surahContentElement = document.getElementById('surahContent');
+        const searchInput = document.getElementById('searchInput');
+
+        function displaySurahs(surahArray) {
+            surahListElement.innerHTML = '';
+            surahArray.forEach(surah => {
+                const surahCard = document.createElement('div');
+                surahCard.className = 'surah-card';
+                surahCard.innerHTML = `
+                    <div class="surah-name">${surah.name}</div>
+                `;
+                surahCard.addEventListener('click', () => showSurah(surah));
+                surahListElement.appendChild(surahCard);
+            });
+        }
+
+        function showSurah(surah) {
+            surahListElement.style.display = 'none';
+            surahContentElement.innerHTML = `
+                <button class="back-btn" onclick="backToList()">العودة إلى القائمة</button>
+                <h2></h2>
+                <div class="quran-text">${surah.content}</div>
+            `;
+            surahContentElement.classList.add('active');
+        }
+
+        function backToList() {
+            surahContentElement.classList.remove('active');
+            surahListElement.style.display = 'grid';
+        }
+
+        // البحث عن السور
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredSurahs = surahs.filter(surah => 
+                surah.name.toLowerCase().includes(searchTerm)
+            );
+            displaySurahs(filteredSurahs);
+        });
+
+        // عرض جميع السور عند تحميل الصفحة
+        displaySurahs(surahs);
+    </script>
+</body>
+</html>
+                                                                        الحقوق محفوظة لموقع Quran Kareem &copy;2025 - <script>document.write(new Date().getFullYear());</script> <a href="https://zed-u.github.io/Quran-Kareem/" target="_blank">Quran-Kareem</a>  

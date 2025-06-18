@@ -3,33 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشغل القرآن الكريم</title>
+    <title>القرآن الكريم mp3</title> 
     <style>
-        * {
+         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
         }
-
         .player-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
             padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            overflow: hidden;backdrop-filter: blur(10px);
             max-width: 450px;
             width: 100%;
             text-align: center;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .player-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+            z-index: -1;
         }
 
         .player-header {
@@ -37,18 +55,20 @@
         }
 
         .player-title {
-            color: #2c3e50;
-            font-size: 24px;
+           font-size: 2rem;
+            color: #fdd700;
             font-weight: bold;
             margin-bottom: 10px;
         }
 
         .current-info {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 179, 71, 0.2));
+            border-radius: 20px;
+            font-size: 1.4rem;
+            color: #ffd700;
+            padding: 20px;
             margin-bottom: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
         .current-reader {
@@ -75,20 +95,24 @@
 
         select {
             padding: 10px 15px;
-            border: 2px solid #e1e8ed;
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 8px;
             font-size: 14px;
-            background: white;
-            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
             cursor: pointer;
             transition: all 0.3s ease;
             flex: 1;
             max-width: 200px;
         }
+        select option {
+            background: #1a1a2e;
+            color: #ffffff;
+        }
 
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: 2px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -100,9 +124,9 @@
         }
 
         .control-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 179, 71, 0.2));
+            color: #ffd700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -115,8 +139,9 @@
         }
 
         .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.4), rgba(255, 179, 71, 0.4));
         }
 
         .control-btn:active {
@@ -124,13 +149,18 @@
         }
 
         .play-pause-btn {
+            background: linear-gradient(45deg, #ffd700, #ffb347);
             width: 60px;
+            color: #1a1a2e;
             height: 60px;
             font-size: 24px;
         }
+        play-pause-btn:hover {
+            box-shadow: 0 0 35px rgba(255, 215, 0, 0.8);
+        }
 
         .progress-container {
-            background: #e1e8ed;
+            background: rgba(255, 255, 255, 0.1);
             height: 6px;
             border-radius: 3px;
             margin-bottom: 10px;
@@ -138,25 +168,49 @@
         }
 
         .progress-bar {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(45deg, #ffd700, #ffb347);
             height: 100%;
             width: 0%;
             transition: width 0.1s ease;
             border-radius: 3px;
+        }
+        .progress-bar:hover {
+            height: 12px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+
+         .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffb347);
+            border-radius: 10px;
+            transition: width 0.1s ease;
+            position: relative;
+        }
+
+        .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
         }
 
         .time-info {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #666;
+            color: #ffffff;
             margin-bottom: 15px;
         }
 
         .repeat-btn {
-            background: #e1e8ed;
-            color: #666;
-            border: none;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 179, 71, 0.2));
+            color: #ffd700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
@@ -165,20 +219,19 @@
         }
 
         .repeat-btn.active {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+             background: linear-gradient(45deg, #ffd700, #ffb347);
+            color: #1a1a2e;
         }
-
         .loading {
             display: none;
-            color: #667eea;
+            color: #ffd700;
             font-size: 14px;
             margin-top: 10px;
         }
 
         .error {
             display: none;
-            color: #e74c3c;
+            color: #ff0000;
             font-size: 12px;
             margin-top: 10px;
         }
@@ -192,21 +245,28 @@
         .loading {
             animation: pulse 1.5s infinite;
         }
-         .copyright {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e1e8ed;
-            color: #7f8c8d;
-            font-size: 7px;
-            line-height: 1.4;
 
+        .copyright {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .copyright strong {
+            color: #ffffff;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
+    <div id="particles"></div>
+
     <div class="player-container">
         <div class="player-header">
-            <h1 class="player-title"> القرآن الكريم mp3</h1>
+            <h1 class="player-title">القرآن الكريم mp3</h1>
         </div>
 
         <div class="current-info">
@@ -218,7 +278,147 @@
             <div class="selector-row">
                 <select id="readerSelect">
                     <option value="">اختر القارئ</option>
-                    <option value="Abu_Bakr_Shatri"> أبو بكر الشاطري</option>
+                    <option value="a1">أبو بكر الشاطري</option>
+                    <option value="a2">أحمد الحواشي</option>
+                    <option value="a3">أحمد الطرابلسي</option>
+                    <option value="a4">أحمد بن على العجمى</option>
+                    <option value="a5">أحمد صابر</option>
+                    <option value="a6">أحمد عامر</option>
+                    <option value="a7">أحمد نعينع</option>
+                    <option value="a8">أكرم العلاقمي</option>
+                    <option value="a9">إبراهيم الأخضر</option>
+                    <option value="b1">ابراهيم الجرمي</option>
+                    <option value="b2">ابراهيم الدوسري</option>
+                    <option value="b3">الدوكالي محمد العالم</option>
+                    <option value="b4">الزين محمد أحمد</option>
+                    <option value="b5">العيون الكوشي</option>
+                    <option value="b6">الفاتح محمد الزبير</option>
+                    <option value="b7">أحمد السويلم</option>
+                    <option value="b8">أحمد ديبان</option>
+                    <option value="b9">بندر بليله</option>
+                    <option value="c1">بدر التركي</option>
+                    <option value="c2">بيشه وا قادر الكردي</option>
+                    <option value="c3">توفيق الصايغ</option>
+                    <option value="c4">جمال شاكر عبدالله</option>
+                    <option value="c5">جمعان العصيمي</option>
+                    <option value="c6">جنيد آدم عبدالله</option>
+                    <option value="c7">حاتم فريد الواعر</option>
+                    <option value="c8">حسن صالح</option>
+                    <option value="c9">حسن الدغريري</option>
+                    <option value="d1">خالد الجليل</option>
+                    <option value="d2">خالد القحطاني</option>
+                    <option value="d3">خالد عبدالكافي</option>
+                    <option value="d4">خليفة الطنيجي</option>
+                    <option value="d5">خالد المهنا</option>
+                    <option value="d6">خالد كريم محمدي</option>
+                    <option value="d7">خالد الزيادي</option>
+                    <option value="d8">رشيد بلعالية</option>
+                    <option value="d9">رامي الدعيس</option>
+                    <option value="e1">زكي داغستاني</option>
+                    <option value="e2">سعد الغامدي</option>
+                    <option value="e3">سعود الشريم</option>
+                    <option value="e4">سهل ياسين</option>
+                    <option value="e5">سيد رمضان</option>
+                    <option value="e6">سعد المقرن</option>
+                    <option value="e7">سيد أحمد هاشمي</option>
+                    <option value="e8">سلمان الصديق</option>
+                    <option value="e9">شيرزاد عبدالرحمن طاهر</option>
+                    <option value="f1">صابر عبدالحكم</option>
+                    <option value="f2">صالح الهبدان</option>
+                    <option value="f3">صلاح البدير</option>
+                    <option value="f4">صلاح بو خاطر</option>
+                    <option value="f5">صالح القريشي</option>
+                    <option value="f6">صالح الشمراني</option>
+                    <option value="f7">طارق عبدالغني دعوب</option>
+                    <option value="f8">عادل ريان</option>
+                    <option value="f9">عبدالبارئ الثبيتي</option>
+                    <option value="g1">عبدالبارئ محمد</option>
+                    <option value="g2">عبدالباسط عبدالصمد</option>
+                    <option value="g3">عبدالرحمن السديس</option>
+                    <option value="g4">عبدالعزيز الأحمد</option>
+                    <option value="g5">عبدالعزيز الزهراني</option>
+                    <option value="g6">عبدالله المطرود</option>
+                    <option value="g7">عبدالله بصفر</option>
+                    <option value="g8">عبدالله خياط</option>
+                    <option value="g9">عبدالله عواد الجهني</option>
+                    <option value="i1">عبدالله غيلان</option>
+                    <option value="i2">عبدالرشيد صوفي</option>
+                    <option value="i3">عبدالمحسن الحارثي</option>
+                    <option value="i4">عبدالمحسن القاسم</option>
+                    <option value="i5">عبدالمحسن العبيكان</option>
+                    <option value="i6">عبدالهادي أحمد كناكري</option>
+                    <option value="i7">عبدالودود حنيف</option>
+                    <option value="i8">عبدالولي الأركاني</option>
+                    <option value="i9">علي الحذيفي</option>
+                    <option value="j1">علي جابر</option>
+                    <option value="j2">علي حجاج السويسي</option>
+                    <option value="j3">عماد زهير حافظ</option>
+                    <option value="j4">عمر القزابري</option>
+                    <option value="j5">عبدالله عبدل</option>
+                    <option value="j6">عبدالإله بن عون</option>
+                    <option value="j7">عادل الكلباني</option>
+                    <option value="j8">عبدالله الكندري</option>
+                    <option value="j9">عبدالرحمن العوسي</option>
+                    <option value="k1">عبدالرحمن الماجد</option>
+                    <option value="k2">عبدالله الخلف</option>
+                    <option value="k3">عبدالله كامل</option>
+                    <option value="k4">عبدالرحمن الشحات</option>
+                    <option value="k5">عبدالكريم الحازمي</option>
+                    <option value="k6">فارس عباد</option>
+                    <option value="k7">فؤاد الخامري</option>
+                    <option value="k8">فيصل الهاجري</option>
+                    <option value="k9">ماهر المعيقلي</option>
+                    <option value="l1">محمد الطبلاوي</option>
+                    <option value="l2">محمد اللحيدان</option>
+                    <option value="l3">محمد أيوب</option>
+                    <option value="l4">محمد صالح عالم شاه</option>
+                    <option value="l5">محمد جبريل</option>
+                    <option value="l6">محمد صديق المنشاوي</option>
+                    <option value="l7">محمد عبدالكريم</option>
+                    <option value="l8">محمد عبدالحكيم سعيد العبدالله</option>
+                    <option value="l9">محمود خليل الحصري</option>
+                    <option value="m1">محمود علي البنا</option>
+                    <option value="m2">مشاري العفاسي</option>
+                    <option value="m3">مصطفى إسماعيل</option>
+                    <option value="m4">مصطفى اللاهوني</option>
+                    <option value="m5">مصطفى رعد العزاوي</option>
+                    <option value="m6">مفتاح السلطني</option>
+                    <option value="m7">محمد سايد</option>
+                    <option value="m8">ماجد الزامل</option>
+                    <option value="m9">ماهر شخاشيرو</option>
+                    <option value="n1">محمود الشيمي</option>
+                    <option value="n2">موسى بلال</option>
+                    <option value="n3">محمود الرفاعي</option>
+                    <option value="n4">معيض الحارثي</option>
+                    <option value="n5">محمد رشاد الشريف</option>
+                    <option value="n6">محمد عثمان خان</option>
+                    <option value="n7">محمد خليل القارئ</option>
+                    <option value="n8"> مروان العكري</option>
+                    <option value="n9">منصور السالمي</option>
+                    <option value="o1">محمد أبو سنينة</option>
+                    <option value="o2">محمد الأمين قنيوة</option>
+                    <option value="o3">مال الله عبدالرحمن الجابر</option>
+                    <option value="o4">محمد برهجي</option>
+                    <option value="o5">محمد الفقيه</option>
+                    <option value="o6">ناصر القطامي</option>
+                    <option value="o7">نبيل الرفاعي</option>
+                    <option value="o8">نعمة الحسان</option>
+                    <option value="o9">نورين محمد صديق</option>
+                    <option value="p1">ناصر الماجد</option>
+                    <option value="p2">نذير المالكي</option>
+                    <option value="p3">هاني الرفاعي</option>
+                    <option value="p4">هيثم الدخين</option>
+                    <option value="p5">هاشم أبو دلال</option>
+                    <option value="p6">هشام الهراز</option>
+                    <option value="p7">وليد النائحي</option>
+                    <option value="p8">وديع اليمني</option>
+                    <option value="p9">ياسر الدوسري</option>
+                    <option value="q1">ياسر القرشي</option>
+                    <option value="q2">ياسر المزروعي</option>
+                    <option value="q3">يحيى حوا</option>
+                    <option value="q4">يوسف الشويعي</option>
+                    <option value="q5">ياسر سلامة</option>
+                    <option value="q6">يوسف بن نوح أحمد</option>
                 </select>
 
                 <select id="surahSelect">
@@ -248,13 +448,16 @@
         <div class="error" id="error"></div>
 
         <audio id="audioPlayer" preload="metadata"></audio>
-        <p>جميع الحقوق محفوظة لموقع </p>
-        <p><h5><a href="https://zed-u.github.io/Quran-Kareem/" target="_blank">Quran Kareem</a></h5></p>
+        
+        <div class="copyright">
+            <p>جميع الحقوق محفوظة لموقع</p>
+            <p><strong><a href="https://zed-u.github.io/Quran-Kareem/" target="_blank">Quran-Kareem</a></strong></p>
+        </div>
     </div>
 
     <script>
         // Surah list with Arabic names
-         const surahs = [
+        const surahs = [
             { number: 1, name: "الفاتحة" },
             { number: 2, name: "البقرة" },
             { number: 3, name: "آل عمران" },
@@ -371,14 +574,573 @@
             { number: 114, name: "الناس" }
         ];
 
-        // Reader names mapping
-        const readerNames = {
-            'abdul_basit': 'عبد الباسط عبد الصمد',
-            'al_ghamdi': 'سعد الغامدي',
-            'al_sudais': 'عبد الرحمن السديس',
-            'mishary': 'مشاري العفاسي',
-            'al_husary': 'محمود خليل الحصري'
-        };
+        // Reader names mapping with their base URLs from mp3quran.net
+        const readers = {
+            'a1': {
+                name: 'أبو بكر الشاطري',
+                baseUrl: 'https://server11.mp3quran.net/shatri/'
+            },
+            'a2': {
+                name: 'أحمد الحواشي',
+                baseUrl: 'https://server11.mp3quran.net/hawashi/'
+            },
+            'a3': {
+                name: 'أحمد الطرابلسي',
+                baseUrl: 'https://server10.mp3quran.net/trabulsi/'
+            },
+            'a4': {
+                name: 'أحمد بن على العجمى',
+                baseUrl: 'https://server10.mp3quran.net/ajm/'
+            },
+            'a5': {
+                name: 'أحمد صابر',
+                baseUrl: 'https://server8.mp3quran.net/saber/'
+            },
+            'a6': {
+                name: 'أحمد عامر',
+                baseUrl: 'https://server10.mp3quran.net/Aamer/'
+            },
+            'a7': {
+                name: 'أحمد نعينع',
+                baseUrl: 'https://server11.mp3quran.net/ahmad_nu/'
+            },
+            'a8': {
+                name: 'أكرم العلاقمي',
+                baseUrl: 'https://server9.mp3quran.net/akrm/'
+            },
+            'a9': {
+                name: 'إبراهيم الأخضر',
+                baseUrl: 'https://server6.mp3quran.net/akdr/'
+            },
+            'b1': {
+                name: 'ابراهيم الجرمي',
+                baseUrl: 'https://server11.mp3quran.net/jormy/'
+            },
+            'b2': {
+                name: 'ابراهيم الدوسري',
+                baseUrl: 'https://server10.mp3quran.net/ibrahim_dosri/Rewayat-Warsh-A-n-Nafi/'
+            },
+            'b3': {
+                name: 'الدوكالي محمد العالم',
+                baseUrl: 'https://server7.mp3quran.net/dokali/'
+            },
+            'b4': {
+                name: 'الزين محمد أحمد',
+                baseUrl: 'https://server9.mp3quran.net/alzain/'
+            },
+            'b5': {
+                name: 'العيون الكوشي',
+                baseUrl: 'https://server11.mp3quran.net/koshi/'
+            },
+            'b6': {
+                name: 'الفاتح محمد الزبير',
+                baseUrl: 'https://server6.mp3quran.net/fateh/'
+            },
+            'b7': {
+                name: 'أحمد السويلم',
+                baseUrl: 'https://server14.mp3quran.net/swlim/Rewayat-Hafs-A-n-Assem/'
+            },
+            'b8': {
+                name: 'أحمد ديبان',
+                baseUrl: 'https://server16.mp3quran.net/deban/Rewayat-Qunbol-A-n-Ibn-Katheer/'
+            },
+            'b9': {
+                name: 'بندر بليله',
+                baseUrl: 'https://server6.mp3quran.net/balilah/'
+            },
+            'c1': {
+                name: 'بدر التركي',
+                baseUrl: 'https://server10.mp3quran.net/bader/Rewayat-Hafs-A-n-Assem/'
+            },
+            'c2': {
+                name: 'بيشه وا قادر الكردي',
+                baseUrl: 'https://server16.mp3quran.net/peshawa/Rewayat-Hafs-A-n-Assem/'
+            },
+            'c3': {
+                name: 'توفيق الصايغ',
+                baseUrl: 'https://server6.mp3quran.net/twfeeq/'
+            },
+            'c4': {
+                name: 'جمال شاكر عبدالله',
+                baseUrl: 'https://server6.mp3quran.net/jamal/'
+            },
+            'c5': {
+                name: 'جمعان العصيمي',
+                baseUrl: 'https://server6.mp3quran.net/jaman/'
+            },
+            'c6': {
+                name: 'جنيد آدم عبدالله',
+                baseUrl: 'https://server16.mp3quran.net/J-Abdullah/Rewayat-Hafs-A-n-Assem/'
+            },
+            'c7': {
+                name: 'حاتم فريد الواعر',
+                baseUrl: 'https://server11.mp3quran.net/hatem/'
+            },
+            'c8': {
+                name: 'حسن صالح',
+                baseUrl: 'https://server16.mp3quran.net/h_saleh/Rewayat-Hafs-A-n-Assem/'
+            },
+            'c9': {
+                name: 'حسن الدغريري',
+                baseUrl: 'https://server16.mp3quran.net/H-Aldaghriri/Rewayat-Hafs-A-n-Assem/'
+            },
+            'd1': {
+                name: 'خالد الجليل',
+                baseUrl: 'https://server10.mp3quran.net/jleel/'
+            },
+            'd2': {
+                name: 'خالد القحطاني',
+                baseUrl: 'https://server10.mp3quran.net/qht/'
+            },
+            'd3': {
+                name: 'خالد عبدالكافي',
+                baseUrl: 'https://server11.mp3quran.net/kafi/'
+            },
+            'd4': {
+                name: 'خليفة الطنيجي',
+                baseUrl: 'https://server12.mp3quran.net/tnjy/'
+            },
+            'd5': {
+                name: 'خالد المهنا',
+                baseUrl: 'https://server11.mp3quran.net/mohna/'
+            },
+            'd6': {
+                name: 'خالد كريم محمدي',
+                baseUrl: 'https://server16.mp3quran.net/kh_mohammadi/Rewayat-Hafs-A-n-Assem/'
+            },
+            'd7': {
+                name: 'خالد الزيادي',
+                baseUrl: 'https://server16.mp3quran.net/K-Alzadi/Rewayat-Hafs-A-n-Assem/'
+            },
+            'd8': {
+                name: 'رشيد بلعالية',
+                baseUrl: 'https://server6.mp3quran.net/bl3/Rewayat-Warsh-A-n-Nafi/'
+            },
+            'd9': {
+                name: 'رامي الدعيس',
+                baseUrl: 'https://server6.mp3quran.net/rami/'
+            },
+            'e1': {
+                name: 'زكي داغستاني',
+                baseUrl: 'https://server9.mp3quran.net/zaki/'
+            },
+            'e2': {
+                name: 'سعد الغامدي',
+                baseUrl: 'https://server7.mp3quran.net/s_gmd/'
+            },
+            'e3': {
+                name: 'سعود الشريم',
+                baseUrl: 'https://server7.mp3quran.net/shur/'
+            },
+            'e4': {
+                name: 'سهل ياسين',
+                baseUrl: 'https://server6.mp3quran.net/shl/'
+            },
+            'e5': {
+                name: 'سيد رمضان',
+                baseUrl: 'https://server12.mp3quran.net/sayed/'
+            },
+            'e6': {
+                name: 'سعد المقرن',
+                baseUrl: 'https://server16.mp3quran.net/saad/Rewayat-Hafs-A-n-Assem/'
+            },
+            'e7': {
+                name: 'سيد أحمد هاشمي',
+                baseUrl: 'https://server16.mp3quran.net/s_hashemi/Rewayat-Hafs-A-n-Assem/'
+            },
+            'e8': {
+                name: 'سلمان الصديق',
+                baseUrl: 'https://server16.mp3quran.net/s_sadeiq/Rewayat-Hafs-A-n-Assem/'
+            },
+            'e9': {
+                name: 'شيرزاد عبدالرحمن طاهر',
+                baseUrl: 'https://server12.mp3quran.net/taher/'
+            },
+            'f1': {
+                name: 'صابر عبدالحكم',
+                baseUrl: 'https://server12.mp3quran.net/hkm/'
+            },
+            'f2': {
+                name: 'صالح الهبدان',
+                baseUrl: 'https://server6.mp3quran.net/habdan/'
+            },
+            'f3': {
+                name: 'صلاح البدير',
+                baseUrl: 'https://server6.mp3quran.net/s_bud/'
+            },
+            'f4': {
+                name: 'صلاح بو خاطر',
+                baseUrl: 'https://server8.mp3quran.net/bu_khtr/'
+            },
+            'f5': {
+                name: 'صالح القريشي',
+                baseUrl: 'https://server16.mp3quran.net/s_alquraishi/Rewayat-Hafs-A-n-Assem/'
+            },
+            'f6': {
+                name: 'صالح الشمراني',
+                baseUrl: 'https://server16.mp3quran.net/shamrani/Rewayat-Hafs-A-n-Assem/'
+            },
+            'f7': {
+                name: 'طارق عبدالغني دعوب',
+                baseUrl: 'https://server10.mp3quran.net/tareq/'
+            },
+            'f8': {
+                name: 'عادل ريان',
+                baseUrl: 'https://server8.mp3quran.net/ryan/'
+            },
+            'f9': {
+                name: 'عبدالبارئ الثبيتي',
+                baseUrl: 'https://server6.mp3quran.net/thubti/'
+            },
+            'g1': {
+                name: 'عبدالبارئ محمد',
+                baseUrl: 'https://server12.mp3quran.net/bari/'
+            },
+            'g2': {
+                name: 'عبدالباسط عبدالصمد',
+                baseUrl: 'https://server7.mp3quran.net/basit/'
+            },
+            'g3': {
+                name: 'عبدالرحمن السديس',
+                baseUrl: 'https://server11.mp3quran.net/sds/'
+            },
+            'g4': {
+                name: 'عبدالعزيز الأحمد',
+                baseUrl: 'https://server11.mp3quran.net/a_ahmed/'
+            },
+            'g5': {
+                name: 'عبدالعزيز الزهراني',
+                baseUrl: 'https://server9.mp3quran.net/zahrani/'
+            },
+            'g6': {
+                name: 'عبدالله المطرود',
+                baseUrl: 'https://server8.mp3quran.net/mtrod/'
+            },
+            'g7': {
+                name: 'عبدالله بصفر',
+                baseUrl: 'https://server6.mp3quran.net/bsfr/'
+            },
+            'g8': {
+                name: 'عبدالله خياط',
+                baseUrl: 'https://server12.mp3quran.net/kyat/'
+            },
+            'g9': {
+                name: 'عبدالله عواد الجهني',
+                baseUrl: 'https://server13.mp3quran.net/jhn/'
+            },
+            'i1': {
+                name: 'عبدالله غيلان',
+                baseUrl: 'https://server8.mp3quran.net/gulan/'
+            },
+            'i2': {
+                name: 'عبدالرشيد صوفي',
+                baseUrl: 'https://server16.mp3quran.net/soufi/Rewayat-Assosi-A-n-Abi-Amr/'
+            },
+            'i3': {
+                name: 'عبدالمحسن الحارثي',
+                baseUrl: 'https://server6.mp3quran.net/mohsin_harthi/'
+            },
+            'i4': {
+                name: 'عبدالمحسن القاسم',
+                baseUrl: 'https://server8.mp3quran.net/qasm/'
+            },
+            'i5': {
+                name: 'عبدالمحسن العبيكان',
+                baseUrl: 'https://server12.mp3quran.net/obk/'
+            },
+            'i6': {
+                name: 'عبدالهادي أحمد كناكري',
+                baseUrl: 'https://server6.mp3quran.net/kanakeri/'
+            },
+            'i7': {
+                name: 'عبدالودود حنيف',
+                baseUrl: 'https://server8.mp3quran.net/wdod/'
+            },
+            'i8': {
+                name: 'عبدالولي الأركاني',
+                baseUrl: 'https://server6.mp3quran.net/arkani/'
+            },
+            'i9': {
+                name: 'علي الحذيفي',
+                baseUrl: 'https://server9.mp3quran.net/huthifi_qalon/'
+            },
+            'j1': {
+                name: 'علي جابر',
+                baseUrl: 'https://server11.mp3quran.net/a_jbr/'
+            },
+            'j2': {
+                name: 'علي حجاج السويسي',
+                baseUrl: 'https://server9.mp3quran.net/hajjaj/'
+            },
+            'j3': {
+                name: 'عماد زهير حافظ',
+                baseUrl: 'https://server6.mp3quran.net/hafz/'
+            },
+            'j4': {
+                name: 'عمر القزابري',
+                baseUrl: 'https://server9.mp3quran.net/omar_warsh/'
+            },
+            'j5': {
+                name: 'عبدالله عبدل',
+                baseUrl: 'https://server16.mp3quran.net/a_abdl/Rewayat-Hafs-A-n-Assem/'
+            },
+            'j6': {
+                name: 'عبدالإله بن عون',
+                baseUrl: 'https://server16.mp3quran.net/a_binaoun/Rewayat-Hafs-A-n-Assem/'
+            },
+            'j7': {
+                name: 'عادل الكلباني',
+                baseUrl: 'https://server8.mp3quran.net/a_klb/'
+            },
+            'j8': {
+                name: 'عبدالله الكندري',
+                baseUrl: 'https://server10.mp3quran.net/Abdullahk/'
+            },
+            'j9': {
+                name: 'عبدالرحمن العوسي',
+                baseUrl: 'https://server6.mp3quran.net/aloosi/'
+            },
+            'k1': {
+                name: 'عبدالرحمن الماجد',
+                baseUrl: 'https://server10.mp3quran.net/a_majed/'
+            },
+            'k2': {
+                name: 'عبدالله الخلف',
+                baseUrl: 'https://server14.mp3quran.net/khalf/'
+            },
+            'k3': {
+                name: 'عبدالله كامل',
+                baseUrl: 'https://server16.mp3quran.net/kamel/Rewayat-Hafs-A-n-Assem/'
+            },
+            'k4': {
+                name: 'عبدالرحمن الشحات',
+                baseUrl: 'https://server16.mp3quran.net/a_alshahhat/Rewayat-Hafs-A-n-Assem/'
+            },
+            'k5': {
+                name: 'عبدالكريم الحازمي',
+                baseUrl: 'https://server16.mp3quran.net/a_alhazmi/Rewayat-Hafs-A-n-Assem/'
+            },
+            'k6': {
+                name: 'فارس عباد',
+                baseUrl: 'https://server8.mp3quran.net/frs_a/'
+            },
+            'k7': {
+                name: 'فؤاد الخامري',
+                baseUrl: 'https://server16.mp3quran.net/f_khamery/Rewayat-Hafs-A-n-Assem/'
+            },
+            'k8': {
+                name: 'فيصل الهاجري',
+                baseUrl: 'https://server16.mp3quran.net/f_hajry/Rewayat-Hafs-A-n-Assem/'
+            },
+            'k9': {
+                name: 'ماهر المعيقلي',
+                baseUrl: 'https://server12.mp3quran.net/maher/'
+            },
+            'l1': {
+                name: 'محمد الطبلاوي',
+                baseUrl: 'https://server12.mp3quran.net/tblawi/'
+            },
+            'l2': {
+                name: 'محمد اللحيدان',
+                baseUrl: 'https://server8.mp3quran.net/lhdan/'
+            },
+            'l3': {
+                name: 'محمد أيوب',
+                baseUrl: 'https://server16.mp3quran.net/ayyoub2/Rewayat-Hafs-A-n-Assem/'
+            },
+            'l4': {
+                name: 'محمد صالح عالم شاه',
+                baseUrl: 'https://server12.mp3quran.net/shah/'
+            },
+            'l5': {
+                name: 'محمد جبريل',
+                baseUrl: 'https://server8.mp3quran.net/jbrl/'
+            },
+            'l6': {
+                name: 'محمد صديق المنشاوي',
+                baseUrl: 'https://server10.mp3quran.net/minsh/'
+            },
+            'l7': {
+                name: 'محمد عبدالكريم',
+                baseUrl: 'https://server12.mp3quran.net/m_krm/Rewayat-Warsh-A-n-Nafi-Men-Tariq-Abi-Baker-Alasbahani/'
+            },
+            'l8': {
+                name: 'محمد عبدالحكيم سعيد العبدالله',
+                baseUrl: 'https://server9.mp3quran.net/abdullah/'
+            },
+            'l9': {
+                name: 'محمود خليل الحصري',
+                baseUrl: 'https://server13.mp3quran.net/husr/'
+            },
+            'm1': {
+                name: 'محمود علي البنا',
+                baseUrl: 'https://server8.mp3quran.net/bna/'
+            },
+            'm2': {
+                name: 'مشاري العفاسي',
+                baseUrl: 'https://server8.mp3quran.net/afs/'
+            },
+            'm3': {
+                name: 'مصطفى إسماعيل',
+                baseUrl: 'https://server8.mp3quran.net/mustafa/Almusshaf-Al-Mojawwad/'
+            },
+            'm4': {
+                name: 'مصطفى اللاهوني',
+                baseUrl: 'https://server6.mp3quran.net/lahoni/'
+            },
+            'm5': {
+                name: 'مصطفى رعد العزاوي',
+                baseUrl: 'https://server8.mp3quran.net/ra3ad/'
+            },
+            'm6': {
+                name: 'مفتاح السلطني',
+                baseUrl: 'https://server14.mp3quran.net/muftah_sultany/Rewayat-Hafs-A-n-Assem/'
+            },
+            'm7': {
+                name: 'محمد سايد',
+                baseUrl: 'https://server16.mp3quran.net/m_sayed/Rewayat-Warsh-A-n-Nafi/'
+            },
+            'm8': {
+                name: 'ماجد الزامل',
+                baseUrl: 'https://server9.mp3quran.net/zaml/'
+            },
+            'm9': {
+                name: 'ماهر شخاشيرو',
+                baseUrl: 'https://server10.mp3quran.net/shaksh/'
+            },
+            'n1': {
+                name: 'محمود الشيمي',
+                baseUrl: 'https://server10.mp3quran.net/sheimy/'
+            },
+            'n2': {
+                name: 'موسى بلال',
+                baseUrl: 'https://server11.mp3quran.net/bilal/'
+            },
+            'n3': {
+                name: 'محمود الرفاعي',
+                baseUrl: 'https://server11.mp3quran.net/mrifai/'
+            },
+            'n4': {
+                name: 'معيض الحارثي',
+                baseUrl: 'https://server8.mp3quran.net/harthi/'
+            },
+            'n5': {
+                name: 'محمد رشاد الشريف',
+                baseUrl: 'https://server10.mp3quran.net/rashad/'
+            },
+            'n6': {
+                name: 'محمد عثمان خان',
+                baseUrl: 'https://server6.mp3quran.net/khan/'
+            },
+            'n7': {
+                name: 'محمد خليل القارئ',
+                baseUrl: 'https://server8.mp3quran.net/m_qari/'
+            },
+            'n8': {
+                name: ' مروان العكري',
+                baseUrl: 'https://server16.mp3quran.net/m_akri/Rewayat-Qalon-A-n-Nafi/'
+            },
+            'n9': {
+                name: 'منصور السالمي',
+                baseUrl: 'https://server14.mp3quran.net/mansor/'
+            },
+            'o1': {
+                name: 'محمد أبو سنينة',
+                baseUrl: 'https://server16.mp3quran.net/sneineh/Rewayat-Qalon-A-n-Nafi/'
+            },
+            'o2': {
+                name: 'محمد الأمين قنيوة',
+                baseUrl: 'https://server16.mp3quran.net/qeniwa/Rewayat-Qalon-A-n-Nafi/'
+            },
+            'o3': {
+                name: 'مال الله عبدالرحمن الجابر',
+                baseUrl: 'https://server16.mp3quran.net/mal-allah_jaber/Rewayat-Hafs-A-n-Assem/'
+            },
+            'o4': {
+                name: 'محمد برهجي',
+                baseUrl: 'https://server16.mp3quran.net/M_Burhaji/Rewayat-Hafs-A-n-Assem/'
+            },
+            'o5': {
+                name: 'محمد الفقيه',
+                baseUrl: 'https://server16.mp3quran.net/M_Alfaqih/Rewayat-Hafs-A-n-Assem/'
+            },
+            'o6': {
+                name: 'ناصر القطامي',
+                baseUrl: 'https://server6.mp3quran.net/qtm/'
+            },
+            'o7': {
+                name: 'نبيل الرفاعي',
+                baseUrl: 'https://server9.mp3quran.net/nabil/'
+            },
+            'o8': {
+                name: 'نعمة الحسان',
+                baseUrl: 'https://server8.mp3quran.net/namh/'
+            },
+            'o9': {
+                name: 'نورين محمد صديق',
+                baseUrl: 'https://server16.mp3quran.net/nourin_siddig/Rewayat-Aldori-A-n-Abi-Amr/'
+            },
+            'p1': {
+                name: 'ناصر الماجد',
+                baseUrl: 'https://server14.mp3quran.net/nasser_almajed/'
+            },
+            'p2': {
+                name: 'نذير المالكي',
+                baseUrl: 'https://server16.mp3quran.net//nathier/Rewayat-Hafs-A-n-Assem/'
+            },
+            'p3': {
+                name: 'هاني الرفاعي',
+                baseUrl: 'https://server8.mp3quran.net/hani/'
+            },
+            'p4': {
+                name: 'هيثم الدخين',
+                baseUrl: 'https://server16.mp3quran.net/h_dukhain/Rewayat-Hafs-A-n-Assem/'
+            },
+            'p5': {
+                name: 'هاشم أبو دلال',
+                baseUrl: 'https://server16.mp3quran.net/h_abudalal/Rewayat-Hafs-A-n-Assem/'
+            },
+            'p6': {
+                name: 'هشام الهراز',
+                baseUrl: 'https://server16.mp3quran.net/H-Lharraz/Rewayat-Warsh-A-n-Nafi/'
+            },
+            'p7': {
+                name: 'وليد النائحي',
+                baseUrl: 'https://server9.mp3quran.net/waleed/'
+            },
+            'p8': {
+                name: 'وديع اليمني',
+                baseUrl: 'https://server6.mp3quran.net/wdee3/'
+            },
+            'p9': {
+                name: 'ياسر الدوسري',
+                baseUrl: 'https://server11.mp3quran.net/yasser/'
+            },
+            'q1': {
+                name: 'ياسر القرشي',
+                baseUrl: 'https://server9.mp3quran.net/qurashi/'
+            },
+            'q2': {
+                name: 'ياسر المزروعي',
+                baseUrl: 'https://server9.mp3quran.net/mzroyee/'
+            },
+            'q3': {
+                name: 'يحيى حوا',
+                baseUrl: 'https://server12.mp3quran.net/yahya/'
+            },
+            'q4': {
+                name: 'يوسف الشويعي',
+                baseUrl: 'https://server9.mp3quran.net/yousef/'
+            },
+            'q5': {
+                name: 'ياسر سلامة',
+                baseUrl: 'https://server12.mp3quran.net/salamah/Rewayat-Hafs-A-n-Assem/'
+            },
+            'q6': {
+                name: 'يوسف بن نوح أحمد',
+                baseUrl: 'https://server8.mp3quran.net/noah/'
+            },
+        }
 
         // DOM elements
         const audioPlayer = document.getElementById('audioPlayer');
@@ -442,7 +1204,7 @@
         function handleReaderChange() {
             currentReaderValue = readerSelect.value;
             if (currentReaderValue) {
-                currentReader.textContent = readerNames[currentReaderValue];
+                currentReader.textContent = readers[currentReaderValue].name;
                 if (currentSurahNumber) {
                     loadAudio();
                 }
@@ -466,7 +1228,8 @@
             if (!currentReaderValue || !currentSurahNumber) return;
             
             const paddedNumber = currentSurahNumber.toString().padStart(3, '0');
-            const audioUrl = `assets/${currentReaderValue}/${paddedNumber}.mp3`;
+            const reader = readers[currentReaderValue];
+            const audioUrl = `${reader.baseUrl}${paddedNumber}.mp3`;
             
             audioPlayer.src = audioUrl;
             resetPlayer();
@@ -598,13 +1361,75 @@
 
         // Handle audio error
         function handleAudioError() {
-            showError('خطأ في تحميل الملف الصوتي. تأكد من وجود الملف في المسار المحدد.');
+            showError('خطأ في تحميل الملف الصوتي. يرجى التحقق من الاتصال بالإنترنت أو اختيار قارئ آخر.');
             isPlaying = false;
             playPauseBtn.textContent = '▶';
         }
-
         // Initialize the player
         init();
+
+         document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const particleCount = 100;
+    
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '-1';
+    canvas.style.pointerEvents = 'none';
+    document.body.appendChild(canvas);
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    
+    // إنشاء الجزيئات
+    function createParticles() {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 3 + 2,
+          speedX: Math.random() * 2 - 1,
+          speedY: Math.random() * 2 - 1
+        });
+      }
+    }
+    
+    // رسم الجزيئات
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+      
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // تحريك الجزيئات
+        p.x += p.speedX;
+        p.y += p.speedY;
+        
+        // إبقاء الجزيئات داخل الشاشة
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+      }
+      
+      requestAnimationFrame(drawParticles);
+    }
+    
+    createParticles();
+    drawParticles();
+  });
     </script>
 </body>
 </html>
